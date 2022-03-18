@@ -1,4 +1,4 @@
-# Weather_station
+# Weather_station - in progress
 
 ## 1. Description
 Small home project of weather station. User can read data from sensors by serial port or LCD display. Control via serial port or 4x4 tact switch.
@@ -81,9 +81,9 @@ Small home project of weather station. User can read data from sensors by serial
 ### Peripherals drivers
 - [x] GPIO
 - [ ] I2C
-- [ ] SPI 
+- [x] SPI 
 - [ ] UART
-- [ ] ADC
+- [x] ADC
 - [ ] RTC
 - [ ] Timers
 ### Hardware drivers
