@@ -1,0 +1,7 @@
+Debug
+build
+.settings
+.vscode/.cortex-debug.peripherals.state.json
+.vscode/.cortex-debug.registers.state.json
+.vscode/settings.json
+Weather_station Debug.launch

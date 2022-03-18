@@ -1,0 +1,20 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug Microcontroller - STLink-V2",
+            "cwd": "${workspaceFolder}",        //Path from where commands are executed
+            "type": "cortex-debug",             //Debug 
+            "executable": "${command:cmake.launchTargetPath}", //or fixed file path: build/project-name.elf
+            "request": "launch",                //Use "attach" to connect to target w/o elf download
+            "servertype": "stlink",             //Use stlink setup of cortex-M debug
+            "device": "STM32F429ZI",            //MCU used
+            "interface": "swd",                 //Interface setup
+            "serialNumber": "",                 //Set ST-Link ID if you use multiple at the same time
+            "runToMain": true,                  //Run to main and stop there
+            "svdFile": "STM32F429.svd",         //SVD file to see reisters
+            "v1": false,
+            "showDevDebugOutput": "both",
+        }
+    ]
+}
