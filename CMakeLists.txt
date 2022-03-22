@@ -40,11 +40,12 @@ set(sources_SRCS
     # Put here your source files, one in each line, relative to CMakeLists.txt file location
     ${PROJ_PATH}/Core/Src/main.c
     ${PROJ_PATH}/Core/Src/it.c
+    ${PROJ_PATH}/Core/Src/config.c
     ${PROJ_PATH}/Core/Startup/system_stm32f4xx.c
     ${PROJ_PATH}/Core/Startup/startup_stm32f429zitx.s
     ${PROJ_PATH}/Core/PrivateDrivers/Src/gpio.c
-    ${PROJ_PATH}/Core/PrivateDrivers/Src/adc.c
     ${PROJ_PATH}/Core/PrivateDrivers/Src/spi.c
+    ${PROJ_PATH}/Core/PrivateDrivers/Src/uart.c
     ${PROJ_PATH}/Drivers/FreeRTOS/portable/GCC/ARM_CM4F/port.c
     ${PROJ_PATH}/Drivers/FreeRTOS/portable/MemMang/heap_4.c
     ${PROJ_PATH}/Drivers/FreeRTOS/croutine.c

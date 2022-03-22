@@ -1,3 +1,7 @@
+#include "it.h"
+
+extern UART_Handle_t huart3;
+
 /**
   * @brief This function handles Non maskable interrupt.
   */
@@ -63,4 +67,12 @@ void DebugMon_Handler(void)
   {
 
   }
+}
+
+/**
+  * @brief This function handles USART3 interrupts.
+  */
+void USART3_IRQHandler(void)
+{
+  UART_Callback(&huart3);
 }
