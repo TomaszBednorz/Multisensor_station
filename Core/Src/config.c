@@ -129,8 +129,9 @@ void UART3_Config(void)
 	huart3.Init.stop_bits = UART_UART_STOP_BITS_1;
 	huart3.Init.oversampling = UART_OVERSAMPLING_8;
 	huart3.Init.boudrate = UART_BOUDRATE_115200;
-	huart3.Init.mode = UART_MODE_POLLING;
 
 	UART_Init(&huart3);
 
+	NVIC_EnableIRQ(USART3_IRQn);
+	NVIC_SetPriority(0, 0);
 }

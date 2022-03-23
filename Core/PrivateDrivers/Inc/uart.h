@@ -32,7 +32,6 @@ typedef struct{
     uint8_t stop_bits;     // Stop bits, @UART_STOP_BITS
     uint8_t oversampling;  // Oversampling, @UART_OVERSAMPLING
     uint8_t boudrate;      // Boudrate, @UART_BOUDRATE
-    uint8_t mode;          // UART mode, @UART_MODE
 }UART_Init_t;
 
 typedef struct{
