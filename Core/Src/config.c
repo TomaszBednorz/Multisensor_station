@@ -113,7 +113,7 @@ void SPI1_Config(void)
 
 	SPI_Init_struct.baudrate_div = SPI_BR_DIV_256; // 60 Mhz / 256 = 0.234 MHz
 	SPI_Init_struct.dff = SPI_DFF_16BIT;
-	//SPI_Init_struct.first_bit = SPI_SPI_FIRST_BIT_LSB;
+	SPI_Init_struct.first_bit = SPI_SPI_FIRST_BIT_MSB;
 	SPI_Init_struct.ssm = SPI_SSM_ENABLE;
 	SPI_Init_struct.ssi = SPI_SSI_1;
 	SPI_Init_struct.mode = SPI_MODE_MASTER;
