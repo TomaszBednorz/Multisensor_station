@@ -1,7 +1,7 @@
 #include "config.h"
 
 UART_Handle_t huart3;
-
+SPI_Handle_t hspi1;
 
 void SystemClockConfig(void)
 {
@@ -109,15 +109,15 @@ void SPI1_Config(void)
 {
 	RCC->APB2ENR |= RCC_APB2ENR_SPI1EN;
 
-	SPI_Init_t SPI_Init_struct = {0};
+	hspi1.Instance = SPI1;
 
-	SPI_Init_struct.baudrate_div = SPI_BR_DIV_256; // 60 Mhz / 256 = 0.234 MHz
-	SPI_Init_struct.dff = SPI_DFF_16BIT;
-	SPI_Init_struct.first_bit = SPI_SPI_FIRST_BIT_MSB;
-	SPI_Init_struct.ssm = SPI_SSM_ENABLE;
-	SPI_Init_struct.ssi = SPI_SSI_1;
-	SPI_Init_struct.mode = SPI_MODE_MASTER;
-	SPI_Init(SPI1, SPI_Init_struct);
+	hspi1.Init.baudrate_div = SPI_BR_DIV_256; // 60 Mhz / 256 = 0.234 MHz
+	hspi1.Init.dff = SPI_DFF_8BIT;
+	hspi1.Init.first_bit = SPI_SPI_FIRST_BIT_MSB;
+	hspi1.Init.ssm = SPI_SSM_ENABLE;
+	hspi1.Init.ssi = SPI_SSI_1;
+	hspi1.Init.mode = SPI_MODE_MASTER;
+	SPI_Init(&hspi1);
 }
 
 void UART3_Config(void)

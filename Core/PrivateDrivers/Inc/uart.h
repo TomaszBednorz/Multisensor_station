@@ -43,7 +43,6 @@ typedef struct{
     uint8_t            *pRxBuf;   // Receive buffer (interrupt mode)
     uint16_t           RxSize;    // Number of receptions (interrupt mode)
     volatile uint16_t  RxCnt;     // Counter of receptions (interrupt mode)
-
 }UART_Handle_t;
 
 

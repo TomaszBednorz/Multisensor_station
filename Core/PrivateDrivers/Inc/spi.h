@@ -59,10 +59,15 @@ typedef struct{
     uint8_t mode;           // Slave / master mode, @SPI_MODE
 }SPI_Init_t;
 
+typedef struct{
+    SPI_TypeDef *Instance;  // UART registers base address
+    SPI_Init_t  Init;       // Init parameters
+}SPI_Handle_t;
+
 // Function prototypes
-void SPI_Init(SPI_TypeDef *SPIx, SPI_Init_t SPI_Init);
-uint16_t SPI_read_write(SPI_TypeDef *SPIx, uint16_t data);
-uint16_t SPI_read(SPI_TypeDef *SPIx);
-void SPI_write(SPI_TypeDef *SPIx, uint16_t data);
+void SPI_Init(SPI_Handle_t *hspi);
+void SPI_TransmitReceive(SPI_Handle_t *hspi, uint8_t *TxData, uint8_t *RxData, uint16_t Size);
+void SPI_Receive(SPI_Handle_t *hspi, uint8_t *RxData, uint16_t Size);
+void SPI_Transmit(SPI_Handle_t *hspi, uint8_t *TxData, uint16_t Size);
 
 #endif /* __SPI_H */
