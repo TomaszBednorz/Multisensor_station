@@ -41,7 +41,7 @@ void UART_Init(UART_Handle_t *huart)
   * @brief UART transmit function (pooling mode)
 
   * @param  huart is handle structure from uart.h
-  * @param  pData pointer to data transmit handle
+  * @param  pData pointer to data transmission handle
   * @param  Size Size of data to transmit
 
   * @retval None
@@ -78,7 +78,7 @@ void UART_Receive(UART_Handle_t *huart, uint8_t *pData, uint16_t Size)
   * @brief UART transmit function (interrupt mode)
 
   * @param  huart is handle structure from uart.h
-  * @param  pData pointer to data transmit handle
+  * @param  pData pointer to data transmission handle
   * @param  Size Size of data to transmit
 
   * @retval None
