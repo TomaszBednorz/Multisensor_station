@@ -1,4 +1,4 @@
-# Weather_station - in progress
+# Multisensor_station - in progress
 
 ## 1. Description
 Small home project of weather station. User can read data from sensors by serial port. All drivers are written from scratch (without CMSIS and FreeRTOS).
@@ -90,7 +90,7 @@ Small home project of weather station. User can read data from sensors by serial
 - [ ] LCD display with HD44780 driver
 - [ ] Analog temperature sensor LM35DZ
 - [ ] Humidity sensor DHT11
-- [ ] Pressure sensor LPS25HB 
+- [x] Pressure/temperature sensor LPS25HB 
 - [ ] Inertial measurement unit LSM6DSO
 - [ ] EEPROM memory
 - [ ] Servo

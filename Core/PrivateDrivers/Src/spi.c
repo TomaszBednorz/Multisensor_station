@@ -84,7 +84,7 @@ void SPI_Receive(SPI_Handle_t *hspi, uint8_t *RxData, uint16_t Size)
   for(uint16_t i = 0; i < Size; i++)
   {
     while(!(hspi->Instance->SR & SPI_SR_TXE));
-    hspi->Instance->DR = 0x0f;  // Send dummy data
+    hspi->Instance->DR = 0x00;  // Send dummy data
     while(!(hspi->Instance->SR & SPI_SR_RXNE));
     RxData[i] = hspi->Instance->DR;
   }

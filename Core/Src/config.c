@@ -42,6 +42,11 @@ void SystemClockConfig(void)
 	RCC->CR &= ~RCC_CR_HSION;  // Disable HSI
 }
 
+void FPU_Enable(void)
+{
+	SCB->CPACR |= ((3 << 10*2)|(3 << 11*2));
+}
+
 void GPIO_Config(void)
 {
 	RCC->AHB1ENR |= RCC_AHB1ENR_GPIOBEN | RCC_AHB1ENR_GPIOAEN | RCC_AHB1ENR_GPIODEN;  // Enable peripherals clocks
@@ -134,4 +139,17 @@ void UART3_Config(void)
 
 	NVIC_EnableIRQ(USART3_IRQn);
 	NVIC_SetPriority(0, 0);
+}
+
+void LPS25H_Config(void)
+{
+	LPS25H_Init_t LPS25H_Init = {0};
+	LPS25H_Init.interrupt = LPS25H_INT_DISABLE;
+	LPS25H_Init.odr = LPS25H_ODR_25HZ;
+	LPS25H_Init.fifo = LPS25H_FIFO_DISABLE;
+
+	if(lps25h_Init(LPS25H_Init) == LPS25H_ERROR)
+	{
+		while(1);  // Wrong initialization
+	}
 }

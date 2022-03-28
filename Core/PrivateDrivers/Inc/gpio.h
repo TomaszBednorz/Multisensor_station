@@ -1,5 +1,5 @@
-#ifndef INC_GPIO_H_
-#define INC_GPIO_H_
+#ifndef __GPIO_H_
+#define __GPIO_H_
 
 #include "stm32f4xx.h"
 #include <stdint.h>
@@ -83,4 +83,4 @@ void GPIO_pin_toggle(GPIO_TypeDef *GPIOx, uint8_t GPIO_Pin);
 
 
 
-#endif /* INC_GPIO_H_ */
+#endif /* __GPIO_H_ */
