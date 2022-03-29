@@ -84,6 +84,7 @@ Small home project of weather station. User can read data from sensors by serial
 - [x] SPI pooling mode
 - [x] UART pooling mode
 - [x] UART interrupt mode
+- [x] ADC
 - [ ] RTC
 - [ ] Timers
 ### Hardware drivers

@@ -46,6 +46,7 @@ set(sources_SRCS
     ${PROJ_PATH}/Core/Startup/startup_stm32f429zitx.s
     ${PROJ_PATH}/Core/PrivateDrivers/Src/gpio.c
     ${PROJ_PATH}/Core/PrivateDrivers/Src/spi.c
+    ${PROJ_PATH}/Core/PrivateDrivers/Src/adc.c
     ${PROJ_PATH}/Core/PrivateDrivers/Src/uart.c
     ${PROJ_PATH}/Drivers/FreeRTOS/portable/GCC/ARM_CM4F/port.c
     ${PROJ_PATH}/Drivers/FreeRTOS/portable/MemMang/heap_4.c

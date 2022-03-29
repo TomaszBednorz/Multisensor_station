@@ -2,6 +2,7 @@
 
 UART_Handle_t huart3;
 SPI_Handle_t hspi1;
+ADC_Handle_t hadc1;
 
 void SystemClockConfig(void)
 {
@@ -49,7 +50,7 @@ void FPU_Enable(void)
 
 void GPIO_Config(void)
 {
-	RCC->AHB1ENR |= RCC_AHB1ENR_GPIOBEN | RCC_AHB1ENR_GPIOAEN | RCC_AHB1ENR_GPIODEN;  // Enable peripherals clocks
+	RCC->AHB1ENR |= RCC_AHB1ENR_GPIOBEN | RCC_AHB1ENR_GPIOAEN | RCC_AHB1ENR_GPIOCEN |RCC_AHB1ENR_GPIODEN;  // Enable peripherals clocks
 
 	GPIO_Init_t GPIO_Init = {0};
 	
@@ -101,12 +102,18 @@ void GPIO_Config(void)
 	GPIO_Init.alt_fun = GPIO_ALT_FUN_7;
 	GPIO_pin_config(GPIOD, GPIO_Init);
 
-	// UART2_RX - PPD9
+	// UART2_RX - PD9
 	GPIO_Init.pin = GPIO_PIN_9;
 	GPIO_Init.mode = GPIO_MODE_ALT_FUN;
 	GPIO_Init.alt_fun = GPIO_ALT_FUN_7;
 	GPIO_pin_config(GPIOD, GPIO_Init);
 
+	// ADC1 pin configuration
+
+	// ADC1_CHANNEL10 - PC0
+	GPIO_Init.pin = GPIO_PIN_0;
+	GPIO_Init.mode = GPIO_MODE_ANALOG;
+	GPIO_pin_config(GPIOC, GPIO_Init);
 
 }
 
@@ -138,6 +145,22 @@ void UART3_Config(void)
 	UART_Init(&huart3);
 
 	NVIC_EnableIRQ(USART3_IRQn);
+	NVIC_SetPriority(0, 0);
+}
+
+void ADC1_Config(void)
+{
+	RCC->APB2ENR |= RCC_APB2ENR_ADC1EN;
+
+	hadc1.Instance = ADC1;
+	hadc1.Init.resolution = ADC_RESOLUTION_12_BIT;
+	hadc1.Init.mode = ADC_MODE_SINGLE_CONVERSION;
+	hadc1.Init.sample_time = ADC_SAMPLE_28_CYCLES;
+	hadc1.Init.channel = 10;
+
+	ADC_Init(&hadc1);
+
+	NVIC_EnableIRQ(ADC_IRQn);
 	NVIC_SetPriority(0, 0);
 }
 
