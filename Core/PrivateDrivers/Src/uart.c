@@ -117,7 +117,7 @@ void UART_ReceiveIT(UART_Handle_t *huart, uint8_t *pData, uint16_t Size)
   */
 void UART_Callback(UART_Handle_t *huart)
 {
-    if((huart->Instance->SR & USART_SR_TXE) && (huart->Instance->CR1 & USART_CR1_TXEIE))  // Handle transmision
+    if(huart->Instance->SR & USART_SR_TXE)  // Handle transmision
     {
         if(huart->TxCnt < huart->TxSize)
         {
@@ -132,7 +132,7 @@ void UART_Callback(UART_Handle_t *huart)
         }
     }
 
-    if((huart->Instance->SR & USART_SR_RXNE) && (huart->Instance->CR1 & USART_CR1_RXNEIE))  // Handle reception
+    if(huart->Instance->SR & USART_SR_RXNE)  // Handle reception
     {
         if(huart->RxCnt < huart->RxSize)
         {
@@ -175,7 +175,7 @@ __attribute__((weak)) void UART_RxCompleteCallback(UART_Handle_t *huart)
 
 
 /**
-  * @brief Function which  calculate value to store in UART BRR register
+  * @brief Function which calculate value to store in UART BRR register
 
   * @param  boudrate boud rate to achieve
   * @param  over8 oversampling

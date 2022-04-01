@@ -12,6 +12,7 @@ void GPIO_Config(void);
 void SPI1_Config(void);
 void UART3_Config(void);
 void ADC1_Config(void);
+void RTC_Config(void);
 
 void LPS25H_Config(void);
 

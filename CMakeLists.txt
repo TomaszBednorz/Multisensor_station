@@ -10,6 +10,7 @@ set(CMAKE_CXX_EXTENSIONS            ON)
 set(PROJ_PATH                       ${CMAKE_CURRENT_SOURCE_DIR})
 message("Build type: "              ${CMAKE_BUILD_TYPE})
 
+
 #
 # Core project settings
 #
@@ -48,6 +49,7 @@ set(sources_SRCS
     ${PROJ_PATH}/Core/PrivateDrivers/Src/spi.c
     ${PROJ_PATH}/Core/PrivateDrivers/Src/adc.c
     ${PROJ_PATH}/Core/PrivateDrivers/Src/uart.c
+    ${PROJ_PATH}/Core/PrivateDrivers/Src/rtc.c
     ${PROJ_PATH}/Drivers/FreeRTOS/portable/GCC/ARM_CM4F/port.c
     ${PROJ_PATH}/Drivers/FreeRTOS/portable/MemMang/heap_4.c
     ${PROJ_PATH}/Drivers/FreeRTOS/croutine.c

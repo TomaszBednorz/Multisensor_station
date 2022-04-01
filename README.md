@@ -85,7 +85,7 @@ Small home project of weather station. User can read data from sensors by serial
 - [x] UART pooling mode
 - [x] UART interrupt mode
 - [x] ADC
-- [ ] RTC
+- [x] RTC
 - [ ] Timers
 ### Hardware drivers
 - [ ] LCD display with HD44780 driver

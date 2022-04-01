@@ -11,5 +11,7 @@ void UsageFault_Handler(void);
 void DebugMon_Handler(void);
 
 void USART3_IRQHandler(void);
+void ADC_IRQHandler(void);
+void RTC_Alarm_IRQHandler(void);
 
 #endif /* __IT_H */

@@ -2,6 +2,7 @@
 
 extern UART_Handle_t huart3;
 extern ADC_Handle_t hadc1;
+extern RTC_Handle_t hrtc;
 
 /**
   * @brief This function handles Non maskable interrupt.
@@ -84,4 +85,12 @@ void USART3_IRQHandler(void)
 void ADC_IRQHandler(void)
 {
   ADC_Callback(&hadc1);
+}
+
+/**
+  * @brief This function handles RTC Alarm A and B interrupts.
+  */
+void RTC_Alarm_IRQHandler(void)
+{
+  RTC_Callback(&hrtc);
 }

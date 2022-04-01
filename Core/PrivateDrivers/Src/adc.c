@@ -119,6 +119,7 @@ void ADC_Callback(ADC_Handle_t *hadc)
 {
     if(hadc->Instance->SR & ADC_SR_EOC)
     {
+        hadc->Instance->SR &= ~ADC_SR_EOC;
         ADC_ConvCompleteCallback(hadc);
     }
 }

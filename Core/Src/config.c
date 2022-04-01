@@ -3,6 +3,7 @@
 UART_Handle_t huart3;
 SPI_Handle_t hspi1;
 ADC_Handle_t hadc1;
+RTC_Handle_t hrtc;
 
 void SystemClockConfig(void)
 {
@@ -163,6 +164,31 @@ void ADC1_Config(void)
 	NVIC_EnableIRQ(ADC_IRQn);
 	NVIC_SetPriority(0, 0);
 }
+
+void RTC_Config(void)
+{
+	RCC->APB1ENR |= RCC_APB1ENR_PWREN;  // PWR clock enable
+	
+    PWR->CR |= PWR_CR_DBP;  // Disable backup domain write protection
+	for(uint32_t i = 0; i < 100; i++);  // Wait for activation above line (didn't find status register)
+
+	RCC->BDCR |= RCC_BDCR_RTCEN;  // Enable RTC clock
+	RCC->BDCR |= RCC_BDCR_RTCSEL;  // HSE / RTCPRE <- RTC clock source
+	RCC->CFGR |= 0x08 << RCC_CFGR_RTCPRE_Pos;  // RTCPRE = 8, RTC clock source = 1 MHz
+	
+	hrtc.Instance = RTC;
+	hrtc.Init.format = RTC_FORMAT_24_HOURS;
+	hrtc.Init.pre_div_A = 99;
+	hrtc.Init.pre_div_S = 9999;  // RTC clock source / ((99 + 1) + (9999 + 1)) = 1 Hz
+
+	RTC_Init(&hrtc);
+
+	NVIC_EnableIRQ(RTC_Alarm_IRQn);
+	NVIC_SetPriority(0, 0);
+
+	PWR->CR &= ~PWR_CR_DBP;  // Enable backup domain write protection
+}
+
 
 void LPS25H_Config(void)
 {
