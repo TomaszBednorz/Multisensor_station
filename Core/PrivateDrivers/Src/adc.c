@@ -104,7 +104,6 @@ float ADC_ConvToVoltage(uint16_t Value, uint16_t Resolution)
 
     voltage = ((float)Value / Resolution) * ADC_MAX_VOLTAGE;
 
-
     return voltage;
 }
 

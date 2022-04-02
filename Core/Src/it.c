@@ -94,3 +94,11 @@ void RTC_Alarm_IRQHandler(void)
 {
   RTC_Callback(&hrtc);
 }
+
+/**
+  * @brief This function handles EXTI[15:10] lines.
+  */
+void EXTI15_10_IRQHandler(void)
+{
+  GPIO_Callback(GPIO_PIN_10);
+}

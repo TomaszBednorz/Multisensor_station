@@ -3,6 +3,7 @@
 UART_Handle_t huart3;
 SPI_Handle_t hspi1;
 ADC_Handle_t hadc1;
+ADC_Handle_t hadc2;
 RTC_Handle_t hrtc;
 
 void SystemClockConfig(void)
@@ -52,23 +53,16 @@ void FPU_Enable(void)
 void GPIO_Config(void)
 {
 	RCC->AHB1ENR |= RCC_AHB1ENR_GPIOBEN | RCC_AHB1ENR_GPIOAEN | RCC_AHB1ENR_GPIOCEN |RCC_AHB1ENR_GPIODEN;  // Enable peripherals clocks
+	RCC->APB2ENR |=RCC_APB2ENR_SYSCFGEN;
 
 	GPIO_Init_t GPIO_Init = {0};
 	
-	// LED pin configuration
+	// External LED pin configuration
 
-	// LD1 - PB0
+	// USER_LED - PD0
 	GPIO_Init.mode = GPIO_MODE_OUTPUT;
-	GPIO_Init.pin = GPIO_PIN_0;
-	GPIO_pin_config(GPIOB, GPIO_Init);
-
-	// LD2 - PB7
-	GPIO_Init.pin = GPIO_PIN_7;
-	GPIO_pin_config(GPIOB, GPIO_Init);
-
-	// LD3 - PB14
-	GPIO_Init.pin = GPIO_PIN_14;
-	GPIO_pin_config(GPIOB, GPIO_Init);
+	GPIO_Init.pin = LED_USER_PIN;
+	GPIO_pin_config(LED_USER_PORT, GPIO_Init);
 
 	// SPI1 pin configuration
 
@@ -109,12 +103,27 @@ void GPIO_Config(void)
 	GPIO_Init.alt_fun = GPIO_ALT_FUN_7;
 	GPIO_pin_config(GPIOD, GPIO_Init);
 
-	// ADC1 pin configuration
+	// ADC pin configuration
 
-	// ADC1_CHANNEL10 - PC0
+	// ADC1_CHANNEL10 - PC0 : fotoresistor
 	GPIO_Init.pin = GPIO_PIN_0;
 	GPIO_Init.mode = GPIO_MODE_ANALOG;
 	GPIO_pin_config(GPIOC, GPIO_Init);
+
+	// ADC2_CHANNEL3 - PA3 : potentiometer
+	GPIO_Init.pin = GPIO_PIN_3;
+	GPIO_Init.mode = GPIO_MODE_ANALOG;
+	GPIO_pin_config(GPIOA, GPIO_Init);
+
+	// External button configuration
+
+	// Button - PB10
+	GPIO_Init.pin = GPIO_PIN_10;
+	GPIO_Init.mode = GPIO_MODE_IT_RISING;
+	GPIO_pin_config(GPIOB, GPIO_Init);
+
+	NVIC_EnableIRQ(EXTI15_10_IRQn);
+	NVIC_SetPriority(0, 0);
 
 }
 
@@ -160,6 +169,22 @@ void ADC1_Config(void)
 	hadc1.Init.channel = 10;
 
 	ADC_Init(&hadc1);
+
+	NVIC_EnableIRQ(ADC_IRQn);
+	NVIC_SetPriority(0, 0);
+}
+
+void ADC2_Config(void)
+{
+	RCC->APB2ENR |= RCC_APB2ENR_ADC2EN;
+
+	hadc2.Instance = ADC2;
+	hadc2.Init.resolution = ADC_RESOLUTION_12_BIT;
+	hadc2.Init.mode = ADC_MODE_SINGLE_CONVERSION;
+	hadc2.Init.sample_time = ADC_SAMPLE_28_CYCLES;
+	hadc2.Init.channel = 3;
+
+	ADC_Init(&hadc2);
 
 	NVIC_EnableIRQ(ADC_IRQn);
 	NVIC_SetPriority(0, 0);
