@@ -214,7 +214,6 @@ void RTC_Config(void)
 	PWR->CR &= ~PWR_CR_DBP;  // Enable backup domain write protection
 }
 
-
 void LPS25H_Config(void)
 {
 	LPS25H_Init_t LPS25H_Init = {0};

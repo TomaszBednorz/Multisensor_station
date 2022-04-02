@@ -48,19 +48,14 @@ Small home project of weather station. User can read data from sensors by serial
   
 ## 3. Bill of materials
 - STM32F429ZI Nucleo board
-- LCD display with HD44780 driver
-- I2C converter to HD44780 (PCF8574)
-- Analog temperature sensor LM35DZ
-- Humidity sensor DHT11
-- Pressure sensor LPS25HB 
+- LPS25H - pressure & temperature sensor
 - Photoresistor
-- Inertial measurement unit LSM6DSO
-- EEPROM memory
-- Servo
-- 4x4 tact switch
+- Resistor
+- Potentiometer
+- LED diode
+- Tact switch
 - USB cable
 - Breadboard
-- Resistors
 - Jumper wires
   
 ## 4. Software, middleware and extensions
@@ -80,27 +75,15 @@ Small home project of weather station. User can read data from sensors by serial
 ## 5. TODO list
 ### Peripherals drivers
 - [x] GPIO
-- [ ] I2C
 - [x] SPI pooling mode
 - [x] UART pooling mode
 - [x] UART interrupt mode
 - [x] ADC
 - [x] RTC
-- [ ] Timers
 ### Hardware drivers
-- [ ] LCD display with HD44780 driver
-- [ ] Analog temperature sensor LM35DZ
-- [ ] Humidity sensor DHT11
 - [x] Pressure/temperature sensor LPS25HB 
-- [ ] Inertial measurement unit LSM6DSO
-- [ ] EEPROM memory
-- [ ] Servo
-- [ ] 4x4 tact switch
 ### Others
 - [ ] RTOS implementation
-- [ ] Serial port communication - basics
-- [ ] Serial port communication - single and continuous mode
-- [ ] 4x4 tact switch to LCD display communication
-
+- [ ] Serial port communication
 ## 6. Electrical diagram
 <TO DO>
