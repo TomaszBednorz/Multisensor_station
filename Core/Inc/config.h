@@ -3,8 +3,20 @@
 
 #include "main.h"
 
-#define LED_USER_PORT	GPIOD
-#define LED_USER_PIN	GPIO_PIN_0
+// On board LEDs
+#define LED1_PORT	GPIOB
+#define LED1_PIN	GPIO_PIN_0
+
+#define LED2_PORT	GPIOB
+#define LED2_PIN	GPIO_PIN_7
+
+#define LED3_PORT	GPIOB
+#define LED3_PIN	GPIO_PIN_14
+
+// External LED
+#define LED4_PORT	GPIOD
+#define LED4_PIN	GPIO_PIN_0
+
 
 // Function prototypes
 void SystemClockConfig(void);

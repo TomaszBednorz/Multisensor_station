@@ -57,12 +57,27 @@ void GPIO_Config(void)
 
 	GPIO_Init_t GPIO_Init = {0};
 	
-	// External LED pin configuration
+	// External & On board LED pin configuration
 
-	// USER_LED - PD0
+	// LED1 - On board
 	GPIO_Init.mode = GPIO_MODE_OUTPUT;
-	GPIO_Init.pin = LED_USER_PIN;
-	GPIO_pin_config(LED_USER_PORT, GPIO_Init);
+	GPIO_Init.pin = LED1_PIN;
+	GPIO_pin_config(LED1_PORT, GPIO_Init);
+
+	// LED2 - On board
+	GPIO_Init.mode = GPIO_MODE_OUTPUT;
+	GPIO_Init.pin = LED2_PIN;
+	GPIO_pin_config(LED2_PORT, GPIO_Init);
+
+	// LED3 - On board
+	GPIO_Init.mode = GPIO_MODE_OUTPUT;
+	GPIO_Init.pin = LED3_PIN;
+	GPIO_pin_config(LED3_PORT, GPIO_Init);
+
+	// LED4 - External
+	GPIO_Init.mode = GPIO_MODE_OUTPUT;
+	GPIO_Init.pin = LED4_PIN;
+	GPIO_pin_config(LED4_PORT, GPIO_Init);
 
 	// SPI1 pin configuration
 
@@ -123,7 +138,7 @@ void GPIO_Config(void)
 	GPIO_pin_config(GPIOB, GPIO_Init);
 
 	NVIC_EnableIRQ(EXTI15_10_IRQn);
-	NVIC_SetPriority(0, 0);
+	NVIC_SetPriority(EXTI15_10_IRQn, 6);
 
 }
 
@@ -155,7 +170,7 @@ void UART3_Config(void)
 	UART_Init(&huart3);
 
 	NVIC_EnableIRQ(USART3_IRQn);
-	NVIC_SetPriority(0, 0);
+	NVIC_SetPriority(USART3_IRQn, 6);
 }
 
 void ADC1_Config(void)
@@ -171,7 +186,7 @@ void ADC1_Config(void)
 	ADC_Init(&hadc1);
 
 	NVIC_EnableIRQ(ADC_IRQn);
-	NVIC_SetPriority(0, 0);
+	NVIC_SetPriority(ADC_IRQn, 6);
 }
 
 void ADC2_Config(void)
@@ -187,7 +202,7 @@ void ADC2_Config(void)
 	ADC_Init(&hadc2);
 
 	NVIC_EnableIRQ(ADC_IRQn);
-	NVIC_SetPriority(0, 0);
+	NVIC_SetPriority(ADC_IRQn, 6);
 }
 
 void RTC_Config(void)
@@ -209,7 +224,7 @@ void RTC_Config(void)
 	RTC_Init(&hrtc);
 
 	NVIC_EnableIRQ(RTC_Alarm_IRQn);
-	NVIC_SetPriority(0, 0);
+	NVIC_SetPriority(RTC_Alarm_IRQn, 6);
 
 	PWR->CR &= ~PWR_CR_DBP;  // Enable backup domain write protection
 }

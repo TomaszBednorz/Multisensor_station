@@ -82,8 +82,14 @@ Small home project of weather station. User can read data from sensors by serial
 - [x] RTC
 ### Hardware drivers
 - [x] Pressure/temperature sensor LPS25HB 
+### API
+- [x] Handling the received data
+- [ ] LEDs effects
+- [ ] Temperature / Pressure
+- [ ] RTC (data, time, alarm)
+- [ ] Button intterrupt
 ### Others
-- [ ] RTOS implementation
-- [ ] Serial port communication
+- [ ] Electrical schematics
+- [ ] Project description & visualization on GitHub
 ## 6. Electrical diagram
 <TO DO>
