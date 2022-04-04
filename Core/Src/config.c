@@ -148,7 +148,7 @@ void SPI1_Config(void)
 
 	hspi1.Instance = SPI1;
 
-	hspi1.Init.baudrate_div = SPI_BR_DIV_256; // 60 Mhz / 256 = 0.234 MHz
+	hspi1.Init.baudrate_div = SPI_BR_DIV_16; // 60 Mhz / 16 = 3.75 MHz
 	hspi1.Init.dff = SPI_DFF_8BIT;
 	hspi1.Init.first_bit = SPI_SPI_FIRST_BIT_MSB;
 	hspi1.Init.ssm = SPI_SSM_ENABLE;
