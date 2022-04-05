@@ -17,7 +17,11 @@ User can:
 
 
 ### Vizualization
-![image](https://user-images.githubusercontent.com/62250785/161798094-891327e0-31a5-4299-9a72-253b34463a5c.png)
+<details>
+  <summary>Image 1</summary>
+  ![1](https://user-images.githubusercontent.com/62250785/161801767-a8ad056a-b472-445a-8afc-a3741a3b12fe.png)
+</details>
+
 
 
 ## 3. Bill of materials
