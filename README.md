@@ -2,7 +2,7 @@
 
 ## 1. Overview
 ### Description
-Small home project of the multisensor station. Communication between the user and interface is by serial port. All drivers are written from scratch (without CMSIS and FreeRTOS).
+Small home project of the multisensor station. Communication between the user and the interface is by serial port. All drivers are written from scratch (without CMSIS and FreeRTOS).
 
 ## 2. Information about project
 ### Functionalities
