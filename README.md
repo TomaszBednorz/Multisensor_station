@@ -1,56 +1,53 @@
-# Multisensor_station - in progress
+# Multisensor_station
 
-## 1. Description
-Small home project of weather station. User can read data from sensors by serial port. All drivers are written from scratch (without CMSIS and FreeRTOS).
+## 1. Overview
+### Description
+Small home project of the multisensor station. Communication between the user and interface is by serial port. All drivers are written from scratch (without CMSIS and FreeRTOS).
 
 ## 2. Information about project
 ### Functionalities
-- User can check the following informations from sensors
-  - temperature [°C]
-  - humidity [%]
-  - pressure [hPa]
-  - height above sea level [m]
-  - height above ground in current location [m]
-  - lighting [%]
-  - acceleration [m/s^2]
-  - rotation speed [°/s]
-  - date and time
-- User can set the information nedded to some calculations
-  - height in user location [m] - by serial port
-  - pressure in user location [hPa] - by serial port
-  - threshold lighting [%] - by potentiometer 
+User can:
+ - set the LEDs lighting sequence on board,
+ - read data from sensors like: pressure [hPa], temperature [*C], lighting [%],
+ - read/set time and date,
+ - set alarms,
+ - use the potentiometer to change threshold to light up the LED
+ - click the button to get log with dat
+
+### Project structure
+Some of catalogs are described below
+```
+Multisensor_station/
+├── .vscode                 // Visual Studio Code files with configuration
+├── Core                    
+│   ├── Inc                 // Header files
+│   ├── PrivateDrivers      // Custom drivers for MCU peripherals
+│   ├── Src                 // Sorce files
+│   └── Startup             // Startup and system files
+├── Datasheets              // Datasheets of MCU and LPS25H sensor
+└── Drivers
+    ├── CMSIS               // Common Microcontroller Software Interface Standard
+    └── FreeRTOS            // FreeRTOS driver
+```
+
 ### Vizualization
-- LCD display (switching data by 4x4 tact switch)
-<TO DO: photography with 4x4 tact switch description>
-- Serial port (by sending appropriate commands described below - 115200 boudrate)
-  - help : shows all options
-  - t : shows the temperature [°C]
-  - hu : shows the humidity [%]
-  - p : shows the pressure [hPa]
-  - p_xxxx.xx : saves actual pressure in user location (in hPa) <TO DO: link to website>
-  - he_asl : shows height above sea level [m]
-  - he_ag : shows height above ground in current location [m]
-  - he_xxx.xx : saves actual height in user location (in m) <TO DO: link to website>
-  - l : shows the lighting [%]
-  - a : shows the acceleration [m/s^2]
-  - g : shows the rotation speed [°/s]
-  - t : shows the time [date and time]
-  - all : shows all data from sensors
-  - i : shows information about actual threshold to turn on diode (in %) and actual pressure at sea level
-  - s : saves the log to the EEPROM memory
-  - e : reads the log from the EEPROM memory
-  - cont1_en : enables continuous mode 1 Hz - shows measurements every 1 second by serial port
-  - cont4_en : enables continuous mode 4 Hz - shows measurements every 250 miliseconds by serial port
-  - cont10_en : enables continuous mode 10 Hz - shows measurements every 100 miliseconds by serial port
-  - cont_dis : disables continuous mode
-- Servo shows actual temperature
-- The LED turns on when lighting is below set threshold
-  
-## 3. Bill of materials
+![Bez tytułu](https://user-images.githubusercontent.com/62250785/161803830-d4a58c7e-f882-44aa-8177-c391bdedd4d5.png)
+
+Above we can see screens connected in one image. On the image are points described below.
+1) Main menu panel. User can choose one of seven options from 0 to 6. User chose option 0 (LED effect).
+2) Here we have menu with LEDs effects. User chose invalid option. Error occurred.
+3) User chose option 1, then 2, then 3. Data from sensors was measured and printed. After it user chose option 4 (Time&Date).
+4) User chose option 0 (Set time). Time has been configured correctly. 
+5) Here user chose option 5 (Set alarm) and configured alarm.
+6) Alarm occurred. User chose option 6 (Help).
+7) Help information printed.
+8) User clicked button and get data log.
+
+## 2. Bill of materials
 - STM32F429ZI Nucleo board
 - LPS25H - pressure & temperature sensor
 - Photoresistor
-- Resistor
+- Resistors
 - Potentiometer
 - LED diode
 - Tact switch
@@ -58,7 +55,7 @@ Small home project of weather station. User can read data from sensors by serial
 - Breadboard
 - Jumper wires
   
-## 4. Software, middleware and extensions
+## 3. Software, middleware and extensions
 - Visual Studio Code with below extensions
   - Arm assembly
   - C/C++
@@ -72,12 +69,11 @@ Small home project of weather station. User can read data from sensors by serial
 - FreeRTOS
 - Custom drivers
   
-## 5. TODO list
+## 4. TODO list
 ### Peripherals drivers
 - [x] GPIO
-- [x] SPI pooling mode
-- [x] UART pooling mode
-- [x] UART interrupt mode
+- [x] SPI
+- [x] UART
 - [x] ADC
 - [x] RTC
 ### Hardware drivers
@@ -85,11 +81,6 @@ Small home project of weather station. User can read data from sensors by serial
 ### API
 - [x] Handling the received data
 - [x] LEDs effects
-- [x] Temperature / Pressure
-- [ ] RTC (data, time, alarm)
-- [ ] Button intterrupt
-### Others
-- [ ] Electrical schematics
-- [ ] Project description & visualization on GitHub
-## 6. Electrical diagram
-<TO DO>
+- [x] Temperature / Pressure / Lighting
+- [x] RTC (data, time, alarm)
+- [x] Button intterrupt
