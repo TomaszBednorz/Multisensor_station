@@ -84,8 +84,8 @@ Small home project of weather station. User can read data from sensors by serial
 - [x] Pressure/temperature sensor LPS25HB 
 ### API
 - [x] Handling the received data
-- [ ] LEDs effects
-- [ ] Temperature / Pressure
+- [x] LEDs effects
+- [x] Temperature / Pressure
 - [ ] RTC (data, time, alarm)
 - [ ] Button intterrupt
 ### Others

@@ -120,7 +120,7 @@ void GPIO_Config(void)
 
 	// ADC pin configuration
 
-	// ADC1_CHANNEL10 - PC0 : fotoresistor
+	// ADC1_CHANNEL10 - PC0 : photoresistor
 	GPIO_Init.pin = GPIO_PIN_0;
 	GPIO_Init.mode = GPIO_MODE_ANALOG;
 	GPIO_pin_config(GPIOC, GPIO_Init);
@@ -134,6 +134,7 @@ void GPIO_Config(void)
 
 	// Button - PB10
 	GPIO_Init.pin = GPIO_PIN_10;
+	GPIO_Init.pupd = GPIO_PUPD_PULL_DOWN;
 	GPIO_Init.mode = GPIO_MODE_IT_RISING;
 	GPIO_pin_config(GPIOB, GPIO_Init);
 
