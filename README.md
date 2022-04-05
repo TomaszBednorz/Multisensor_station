@@ -22,7 +22,7 @@ Multisensor_station/
 ├── Core                    
 │   ├── Inc                 // Header files
 │   ├── PrivateDrivers      // Custom drivers for MCU peripherals
-│   ├── Src                 // Sorce files
+│   ├── Src                 // Source files
 │   └── Startup             // Startup and system files
 ├── Datasheets              // Datasheets of MCU and LPS25H sensor
 └── Drivers
