@@ -45,7 +45,8 @@ set(sources_SRCS
     ${PROJ_PATH}/Core/Src/lps25h.c
     ${PROJ_PATH}/Core/Src/rtos_tasks.c
     ${PROJ_PATH}/Core/Src/leds.c
-    ${PROJ_PATH}/Core/Src/dateTimeAlarm.c
+    ${PROJ_PATH}/Core/Src/dateTime.c
+    ${PROJ_PATH}/Core/Src/sensors.c
     ${PROJ_PATH}/Core/Startup/system_stm32f4xx.c
     ${PROJ_PATH}/Core/Startup/startup_stm32f429zitx.s
     ${PROJ_PATH}/Core/PrivateDrivers/Src/gpio.c

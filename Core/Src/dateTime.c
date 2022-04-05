@@ -2,28 +2,34 @@
 
 extern RTC_Handle_t hrtc;
 
-const char* dayWeekLUT[7] = {"MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"};
-
 void showTimeDateMenu(void)
 {
-    uint8_t date, month, week_day, year, seconds, minutes, hours;
-
     const char* msgMenu1 = "\r\n------------------------------\r\n"
                            "|       SELECT OPTION        |\r\n"
                            "------------------------------\r\n";
-    const char* msgMenu2 = "------------------------------\r\n"
+    const char* msgMenu2 = "\r\n------------------------------\r\n"
                            "0: Set time\r\n"
                            "1: Set date\r\n"
                            "2: Exit\r\n"
-                           "Enter number(0-3):";
+                           "Enter number(0-2):";
 
+    xQueueSend(queuePrint, &msgMenu1, portMAX_DELAY);
+    showTimeDate();
+    xQueueSend(queuePrint, &msgMenu2, portMAX_DELAY);
+}
+
+void showTimeDate(void)
+{
+    char* dayWeekLUT[7] = {"MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"};
+    
+    uint8_t date, month, week_day, year, seconds, minutes, hours;
     static char msgTimeDate[45];
     static char *msg = msgTimeDate;
 
     // Update time and date in hrtc handle
     RTC_GetTime(&hrtc);
     RTC_GetDate(&hrtc);
-
+    
     // Store actual time and date to variables
     date = hrtc.Date.date;
     month = hrtc.Date.month;
@@ -34,14 +40,18 @@ void showTimeDateMenu(void)
     minutes = hrtc.Time.minutes;
     hours = hrtc.Time.hours;
 
+    if(week_day == 0)  // Prevent against wrong access to dayWeekLUT
+    {
+        week_day = 1;
+    }
 
-    sprintf((char*)msgTimeDate, "Date: %d.%d.20%dr %s\r\nTime: %d:%d:%d\r\n", date, month, year, dayWeekLUT[week_day-1], hours, minutes, seconds);
-    xQueueSend(queuePrint, &msgMenu1, portMAX_DELAY);
+    sprintf((char*)msgTimeDate, "\r\nDate: %d.%d.20%dr %s\r\nTime: %d:%d:%d", date, month, year, dayWeekLUT[week_day-1], hours, minutes, seconds);
     xQueueSend(queuePrint, &msg, portMAX_DELAY);
-    xQueueSend(queuePrint, &msgMenu2, portMAX_DELAY);
 }
 
-// max 2 digits in number
+/*
+ * This function helps extract number according to user input from serial port
+ */
 uint8_t getNumber(command_t* command)
 {
     uint8_t firstDig = 0, secondDig = 0;

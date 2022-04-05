@@ -37,7 +37,7 @@ void taskPrint(void* parameters)
 
     while(1)
     {
-        xQueueReceive(queuePrint, &commandAddr, portMAX_DELAY);
+        xQueueReceive(queuePrint, &commandAddr, portMAX_DELAY);  // Wait for data in queue
         msgBuffer = (char*)commandAddr;
 
         printMsg(msgBuffer);
@@ -46,7 +46,7 @@ void taskPrint(void* parameters)
 }
 
 /*
- * This task is responsible for notificate approprite task based on received data
+ * This task notifies approprite task based on received data
  */
 void taskMenu(void* parameters)
 {
@@ -70,13 +70,13 @@ void taskMenu(void* parameters)
 
         xQueueSend(queuePrint, &msgMenu, 0);  // Print main menu
 
-        xTaskNotifyWait(0, 0, &commandAddr, portMAX_DELAY);
+        xTaskNotifyWait(0, 0, &commandAddr, portMAX_DELAY);  // Wait for the user input
         command = (command_t*)commandAddr;
 
         if(command->length == 1)
         {
             nextState = command->payload[0] - 48;
-            switch (nextState)
+            switch (nextState)  // Change state and notify the task corresponding  to the input data
             {
             case 0:
                 currentState = sLedEffect;
@@ -99,10 +99,12 @@ void taskMenu(void* parameters)
                 xTaskNotify(taskTimeDateHandle, 0, eNoAction);
                 break;
             case 5:
-                // xTaskNotify(..., 0, eNoAction);
+                currentState = sAlarmConfig;
+                xTaskNotify(taskAlarmConfigHandle, 0, eNoAction);
                 break;
             case 6:
-                // xTaskNotify(..., 0, eNoAction);
+                currentState = sHelp;
+                xTaskNotify(taskHelpHandle, 0, eNoAction);
                 break;
             default:  // Invalid data received
                 xQueueSend(queuePrint, &msg_inv, 0);
@@ -121,7 +123,7 @@ void taskMenu(void* parameters)
 }
 
 /*
- * This task is responsible for generate appropriate LEDs effect based on user input
+ * This task generates appropriate LEDs effect based on user input
  */
 void taskLeds(void* parameters)
 {
@@ -175,23 +177,15 @@ void taskLeds(void* parameters)
 }
 
 /*
- * This task is responsible for inform about actual temperature
+ * This task informs about actual temperature
  */
 void taskTemperature(void* parameters)
 {
-    static char msgTemp[40];
-    float temp;
-
-    static char *msg = msgTemp;
-
     while(1)
     {
         xTaskNotifyWait(0, 0, NULL, portMAX_DELAY);  // Wait for the user to select an option in main menu
 
-        temp = lps25h_ReadTemp();
-        sprintf((char*)msgTemp, "\r\nActual temperature: %.2f%cC\r\n", temp, 248);
-
-        xQueueSend(queuePrint, &msg, 0);
+        showTemperature();
 
         currentState = sMainMenu;
         xTaskNotify(taskMenuHandle, 0, eNoAction);  // Return to main menu
@@ -199,23 +193,15 @@ void taskTemperature(void* parameters)
 }
 
 /*
- * This task is responsible for inform about actual pressure
+ * This task informs about actual pressure
  */
 void taskPressure(void* parameters)
 {
-    static char msgPres[40];
-    float pres;
-
-    static char *msg = msgPres;
-
     while(1)
     {
         xTaskNotifyWait(0, 0, NULL, portMAX_DELAY);  // Wait for the user to select an option in main menu
 
-        pres = lps25h_ReadPress();
-        sprintf((char*)msgPres, "\r\nActual pressure: %.2fhPa\r\n", pres);
-
-        xQueueSend(queuePrint, &msg, 0);
+        showPressure();
 
         currentState = sMainMenu;
         xTaskNotify(taskMenuHandle, 0, eNoAction);  // Return to main menu
@@ -223,31 +209,15 @@ void taskPressure(void* parameters)
 }
 
 /*
- * This task is responsible for inform about actual lighting (fotoresistor)
+ * This task informs about actual lighting (photoresistor)
  */
 void taskLighting(void* parameters)
 {
-    static char msgLight[40];
-    float voltageFotoresistor;
-    uint8_t light;
-
-    static char *msg = msgLight;
-
     while(1)
     {
         xTaskNotifyWait(0, 0, NULL, portMAX_DELAY);  // Wait for the user to select an option in main menu
 
-        // Read vlotage value on fotoresistor
-        ADC_Start(&hadc1);
-        ADC_PollForConversion(&hadc1);
-        voltageFotoresistor = ADC_ConvToVoltage(ADC_Read(&hadc1), ADC_RES_RANGE_12_BIT);
-
-        // Convert voltage to value in % : brightlu = more %
-        light = (1 - (voltageFotoresistor / ADC_MAX_VOLTAGE)) * 100;
-
-        sprintf((char*)msgLight, "\r\nActual lighting: %d%c\r\n", light, 37);
-
-        xQueueSend(queuePrint, &msg, 0);
+        showLighting();
 
         currentState = sMainMenu;
         xTaskNotify(taskMenuHandle, 0, eNoAction);  // Return to main menu
@@ -255,7 +225,7 @@ void taskLighting(void* parameters)
 }
 
 /*
- * This task is responsible for inform about actual time & date. The user can configure these values.
+ * This task informs about actual time & date. The user can configure these values.
  */
 void taskTimeDate(void* parameters)
 {
@@ -299,8 +269,6 @@ void taskTimeDate(void* parameters)
             xQueueSend(queuePrint, &msg_inv, 0);
         }
 
-        
-
         currentState = sMainMenu;
         xTaskNotify(taskMenuHandle, 0, eNoAction);  // Return to main menu
     }
@@ -332,7 +300,7 @@ void taskTimeConfig(void* parameters)
         xQueueSend(queuePrint, &msgMenu, 0);
         xQueueSend(queuePrint, &msgConfigHour, 0);  // Inform the user that should input data about current hour
 
-        timeState = Hour;
+        timeState = Hour;  // Start from the beginning state
 
         while(timeState != Exit)
         {
@@ -355,7 +323,9 @@ void taskTimeConfig(void* parameters)
                 break;
             case Sec:   
                 hrtc.Time.seconds = getNumber(command);
-                if(hrtc.Time.hours > 23 || hrtc.Time.minutes > 59 || hrtc.Time.seconds > 59)  // Check the correctness of the data
+
+                // Check the correctness of the time
+                if(hrtc.Time.hours > 23 || hrtc.Time.minutes > 59 || hrtc.Time.seconds > 59)  
                 {
                     xQueueSend(queuePrint, &msgConfigInvalid, 0);
                 }
@@ -386,7 +356,7 @@ void taskDateConfig(void* parameters)
     command_t* command;
     uint32_t commandAddr;
 
-    const char* msgMenu =  "------------------------------\r\n"
+    const char* msgMenu =  "\r\n------------------------------\r\n"
                            "|     DATE CONFIGURATION     |\r\n"
                            "------------------------------\r\n";
     const char* msgConfigDate = "\r\nEnter date(1-31):";
@@ -394,15 +364,272 @@ void taskDateConfig(void* parameters)
     const char* msgConfigWeekDay = "\r\nEnter week day(1-7):";
     const char* msgConfigYear = "\r\nEnter year(0-99):";
 
+    const char* msgConfigInvalid = "\r\nInvalid entered data!";
+    const char* msgConfigCorrect = "\r\nConfiguration correct !";
+
+    enum state{Date=0, Month, WeekDay, Year, Exit};  // Consecutive states in date configuration
+    enum state dataState;
 
     while(1)
     {
         xTaskNotifyWait(0, 0, NULL, portMAX_DELAY);  // Wait for the user to select an option in Time&Date menu
+        xQueueSend(queuePrint, &msgMenu, 0);
+        xQueueSend(queuePrint, &msgConfigDate, 0);  // Inform the user that should input data about current date
+
+        dataState = Date;  // Start from the beginning state
+
+        while(dataState != Exit)
+        {
+            // Get data from the user, until it sends a year
+            xTaskNotifyWait(0, 0, &commandAddr, portMAX_DELAY);  
+            command = (command_t*)commandAddr;
 
 
+            switch (dataState)
+            {
+            case Date:
+                hrtc.Date.date = getNumber(command);
+                xQueueSend(queuePrint, &msgConfigMonth, 0);  // Inform the user that should input data about current month
+                dataState = Month;
+                break;
+            case Month:
+                hrtc.Date.month = getNumber(command);
+                xQueueSend(queuePrint, &msgConfigWeekDay, 0);  // Inform the user that should input data about current weekday
+                dataState = WeekDay;
+                break;
+            case WeekDay:   
+                hrtc.Date.week_day = getNumber(command);
+                xQueueSend(queuePrint, &msgConfigYear, 0);  // Inform the user that should input data about current year
+                dataState = Year;
+                break;
+            case Year:
+                hrtc.Date.year = getNumber(command);
+
+                // Check the correctness of the data
+                if(hrtc.Date.date > 31 || hrtc.Date.date < 1 || hrtc.Date.month > 12 || hrtc.Date.month < 1 || 
+                   hrtc.Date.week_day > 7 || hrtc.Date.week_day < 1 || hrtc.Date.year > 99)  
+                {
+                    xQueueSend(queuePrint, &msgConfigInvalid, 0);
+                }
+                else
+                {
+                    RTC_SetDate(&hrtc);
+                    xQueueSend(queuePrint, &msgConfigCorrect, 0);
+                }
+                dataState = Exit;
+                break;
+            case Exit:
+            default:
+                break;
+            }
+
+        }
+
+        currentState = sTimeDateConfig;
+        xTaskNotify(taskTimeDateHandle, 0, eNoAction);  // Return to Time&Date menu and next to main menu
+    }
+}
+
+/*
+ * This task is responsible for alarm configuration
+ */
+void taskAlarmConfig(void* parameters)
+{
+    command_t* command;
+    uint32_t commandAddr;
+    const char* msgMenu =  "\r\n------------------------------\r\n"
+                           "|    ALARM  CONFIGURATION    |\r\n"
+                           "------------------------------";
+    const char* msgConfigAlarm = "\r\nEnter alarm number(1-2):";  
+    const char* msgConfigWeekday = "\r\nEnter weekday(1-7):";                    
+    const char* msgConfigHour = "\r\nEnter hour(0-23):";
+    const char* msgConfigMin = "\r\nEnter minutes(0-59):";
+
+    const char* msgConfigInvalid = "\r\nInvalid entered data!";
+    const char* msgConfigCorrect = "\r\nConfiguration correct !";
+
+    enum state{Alarm=0, Weekday, Hour, Min, Exit};  // Consecutive states in alarm configuration
+    enum state alarmState;
+
+    RTC_Alarm_t alarmConfig ={0};  // This variable store alarm configuration
+    uint8_t alarm = 0;  // This variable store number of alarm (A/1 or B/2)
+
+    while(1)
+    {
+        xTaskNotifyWait(0, 0, NULL, portMAX_DELAY);  // Wait for the user to select an option in menu
+        xQueueSend(queuePrint, &msgMenu, 0);
+        xQueueSend(queuePrint, &msgConfigAlarm, 0);  // Inform the user that should choose alarm number
+
+        memset(&alarmConfig,0,sizeof(alarmConfig));  // Clear alarmConfig variable;
+        alarmConfig.seconds_mask = 1;  // Don't care about seconds in alarm configuration
+
+        alarm = 0; // Reset alarm variable
+
+        alarmState = Alarm;  // Start from the beginning state
+
+        while(alarmState != Exit)
+        {
+            // Get data from the user, until it sends a minute
+            xTaskNotifyWait(0, 0, &commandAddr, portMAX_DELAY);  
+            command = (command_t*)commandAddr;
+
+            switch (alarmState)
+            {
+            case Alarm:
+                alarm = getNumber(command);
+                xQueueSend(queuePrint, &msgConfigWeekday, 0);  // Inform the user that should input weekday of alarm
+                alarmState = Weekday;
+                break;
+            case Weekday:
+                alarmConfig.date = getNumber(command);
+                alarmConfig.week_day_sel = 1;  // Weekday selection
+                xQueueSend(queuePrint, &msgConfigHour, 0);  // Inform the user that should input hour of alarm
+                alarmState = Hour;
+                break;
+            case Hour:
+                alarmConfig.hours = getNumber(command);
+                xQueueSend(queuePrint, &msgConfigMin, 0);  // Inform the user that should input minute of alarm
+                alarmState = Min;
+                break;
+            case Min:   
+                alarmConfig.minutes = getNumber(command);
+
+                // Check the correctness of the time
+                if(alarm >2 || alarm < 1 || alarmConfig.hours > 23 || alarmConfig.minutes > 59 || 
+                   alarmConfig.date > 7 || alarmConfig.date < 1)  
+                {
+                    xQueueSend(queuePrint, &msgConfigInvalid, 0);
+                }
+                else
+                {
+                    if(alarm == 1)
+                    {
+                        hrtc.AlarmA = alarmConfig;
+                    }
+                    else
+                    {
+                        hrtc.AlarmB = alarmConfig;
+                    }
+                    RTC_AlarmConfigIT(&hrtc, alarm, RTC_ALARM_ENABLE);  // Enable alarm interrupt
+                    xQueueSend(queuePrint, &msgConfigCorrect, 0);
+                }
+                alarmState = Exit;
+                break;
+            case Exit:
+            default:
+                break;
+            }
+
+        }
+
+        currentState = sMainMenu;
+        xTaskNotify(taskMenuHandle, 0, eNoAction);  // Return to main menu
+    }
+}
 
 
-        xTaskNotify(taskMenuHandle, 0, eNoAction);  // Return to Time&Date menu and next to main menu
+/*
+ * This task informs the user, that event was triggered (alarm or button interrupt)
+ */
+void taskEventTriggered(void* parameters)
+{
+    uint8_t item;
+    const char* msgAlarmA = "\r\n------------------------------\r\n"
+                           "|     ALARM A TRIGGERED!     |\r\n"
+                           "------------------------------\r\n";
+    const char* msgAlarmB = "\r\n------------------------------\r\n"
+                           "|     ALARM B TRIGGERED!     |\r\n"
+                           "------------------------------\r\n";
+    const char* msgMenu = "\r\nEnter number(0-6):";
+    while(1)
+    {
+
+        xQueueReceive(queueEvents, &item, portMAX_DELAY);  // Wait for events like alarms and button ISR
+
+        while(currentState != sMainMenu);  // Wait until user come back to main meny
+
+        if(item == EVENT_ALARM_A)
+        {
+            xQueueSend(queuePrint, &msgAlarmA, 0);
+            showTimeDate();
+        }
+        else if(item == EVENT_ALARM_B)
+        {
+            xQueueSend(queuePrint, &msgAlarmB, 0);
+            showTimeDate();
+        }
+        else if(item == EVENT_BUTTON_IT)
+        {
+            showTimeDate();
+            showTemperature();
+            showPressure();
+            showLighting();
+        }
+
+        xQueueSend(queuePrint, &msgMenu, 0);
+
+    }
+}
+
+/*
+ * This task shows the user help information
+ */
+void taskHelp(void* parameters)
+{
+    const char* msgHelp =  "\r\n--------------------------------------------\r\n"
+                           "|                   HELP                   |\r\n"
+                           "--------------------------------------------\r\n"
+                           "- Photoresistor controls when the LED is ON\r\n"
+                           "- User can change the diode actication \r\n"
+                           "  threshold by potentiometer\r\n"
+                           "- Click the button to see log from sensors\r\n"
+                           "- You have to be in main menu to see\r\n"
+                           "  information about alarm\r\n"
+                           "ENTER MESSAGE TO GO BACK:";
+    while(1)
+    {
+        xTaskNotifyWait(0, 0, NULL, portMAX_DELAY);  // Wait for the user to select an option in main menu
+
+        xQueueSend(queuePrint, &msgHelp, 0);
+
+        xTaskNotifyWait(0, 0, NULL, portMAX_DELAY);  // Wait for the user to send a message to return to the main menu
+
+        currentState = sMainMenu;
+        xTaskNotify(taskMenuHandle, 0, eNoAction);  // Return to main menu
+    }
+}
+
+/*
+ * This task turns on/off LED according to voltage on potentiometer and photoresistor
+ */
+void taskPotentiometer(void* parameters)
+{
+    TickType_t lastWakeTime;
+    float voltagePhotoresistor, voltagePotentiometer;
+
+    lastWakeTime = xTaskGetTickCount();  
+
+    while(1)
+    {
+        ADC_Start(&hadc1);
+        ADC_Start(&hadc2);
+
+        ADC_PollForConversion(&hadc1);
+        voltagePhotoresistor = ADC_ConvToVoltage(ADC_Read(&hadc1), ADC_RES_RANGE_12_BIT);
+        ADC_PollForConversion(&hadc2);
+        voltagePotentiometer = ADC_ConvToVoltage(ADC_Read(&hadc2), ADC_RES_RANGE_12_BIT);
+
+        // Light up LED when voltage on photoresistor is higher than on potentiometer
+        if(voltagePhotoresistor > voltagePotentiometer)  
+        {
+            GPIO_pin_write(LED4_PORT, LED4_PIN, GPIO_PIN_SET);
+        }
+        else
+        {
+            GPIO_pin_write(LED4_PORT, LED4_PIN, GPIO_PIN_RESET);
+        }
+
+        xTaskDelayUntil(&lastWakeTime, pdMS_TO_TICKS(50));  // Wake up task every 50ms
     }
 }
 

@@ -251,13 +251,21 @@ void RTC_Callback(RTC_Handle_t *hrtc)
     EXTI->PR |= EXTI_PR_PR17;  // Clear pending bit by progromming it to '1'
     if(hrtc->Instance->ISR & RTC_ISR_ALRAF)
     {
+        DisableRegsWriteProtection(hrtc);       // Enable write to RTC registers
+        hrtc->Instance->CR &= ~RTC_CR_ALRAE;    // Disable interrupt
+        hrtc->Instance->CR &= ~RTC_CR_ALRAIE;
         hrtc->Instance->ISR &= ~RTC_ISR_ALRAF;  // Clear alarm A flag
+        EnableRegsWriteProtection(hrtc);        // Enable write to RTC registers
         RTC_AlarmACallback(hrtc);
     }
     if(hrtc->Instance->ISR & RTC_ISR_ALRBF)
     {
+        DisableRegsWriteProtection(hrtc);       // Enable write to RTC registers
+        hrtc->Instance->CR &= ~RTC_CR_ALRBE;    // Disable interrupt
+        hrtc->Instance->CR &= ~RTC_CR_ALRBIE;
         hrtc->Instance->ISR &= ~RTC_ISR_ALRBF;  // Clear alarm B flag
-        RTC_AlarmACallback(hrtc);
+        EnableRegsWriteProtection(hrtc);        // Enable write to RTC registers
+        RTC_AlarmBCallback(hrtc);
     }
 }
 
