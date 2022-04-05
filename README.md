@@ -1,6 +1,7 @@
 # Multisensor_station
 
-## 1. Description
+## 1. Overview
+### Description
 Small home project of the multisensor station. Communication between the user and interface is by serial port. All drivers are written from scratch (without CMSIS and FreeRTOS).
 
 ## 2. Information about project
@@ -19,10 +20,17 @@ User can:
 ### Vizualization
 ![Bez tytułu](https://user-images.githubusercontent.com/62250785/161803830-d4a58c7e-f882-44aa-8177-c391bdedd4d5.png)
 
+Above we can see screens connected in one image. On the image are points described below.
+1) Main menu panel. User can choose one of seven options from 0 to 6. User chose option 0 (LED effect).
+2) Here we have menu with LEDs effects. User chose invalid option. Error occurred.
+3) User chose option 1, then 2, then 3. Data from sensors was measured and printed. After it user chose option 4 (Time&Date).
+4) User chose option 0 (Set time). Time has been configured correctly. 
+5) Here user chose option 5 and configured alarm.
+6) Alarm occurred. User chose option 6.
+7) Help information printed.
+8) User clicked button and get data log.
 
-
-
-## 3. Bill of materials
+## 2. Bill of materials
 - STM32F429ZI Nucleo board
 - LPS25H - pressure & temperature sensor
 - Photoresistor
@@ -34,7 +42,7 @@ User can:
 - Breadboard
 - Jumper wires
   
-## 4. Software, middleware and extensions
+## 3. Software, middleware and extensions
 - Visual Studio Code with below extensions
   - Arm assembly
   - C/C++
@@ -48,7 +56,7 @@ User can:
 - FreeRTOS
 - Custom drivers
   
-## 5. TODO list
+## 4. TODO list
 ### Peripherals drivers
 - [x] GPIO
 - [x] SPI
