@@ -15,8 +15,11 @@ User can:
 
 ### Project structure
 
+
 ### Vizualization
-  
+![image](https://user-images.githubusercontent.com/62250785/161798094-891327e0-31a5-4299-9a72-253b34463a5c.png)
+
+
 ## 3. Bill of materials
 - STM32F429ZI Nucleo board
 - LPS25H - pressure & temperature sensor
@@ -46,9 +49,8 @@ User can:
 ## 5. TODO list
 ### Peripherals drivers
 - [x] GPIO
-- [x] SPI pooling mode
-- [x] UART pooling mode
-- [x] UART interrupt mode
+- [x] SPI
+- [x] UART
 - [x] ADC
 - [x] RTC
 ### Hardware drivers
@@ -56,6 +58,6 @@ User can:
 ### API
 - [x] Handling the received data
 - [x] LEDs effects
-- [x] Temperature / Pressure
+- [x] Temperature / Pressure / Lighting
 - [x] RTC (data, time, alarm)
 - [x] Button intterrupt
