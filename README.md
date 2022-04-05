@@ -15,7 +15,20 @@ User can:
  - click the button to get log with dat
 
 ### Project structure
-
+Some of catalogs are described below
+```
+Multisensor_station/
+├── .vscode                 // Visual Studio Code files with configuration
+├── Core                    
+│   ├── Inc                 // Header files
+│   ├── PrivateDrivers      // Custom drivers for MCU peripherals
+│   ├── Src                 // Sorce files
+│   └── Startup             // Startup and system files
+├── Datasheets              // Datasheets of MCU and LPS25H sensor
+└── Drivers
+    ├── CMSIS               // Common Microcontroller Software Interface Standard
+    └── FreeRTOS            // FreeRTOS driver
+```
 
 ### Vizualization
 ![Bez tytułu](https://user-images.githubusercontent.com/62250785/161803830-d4a58c7e-f882-44aa-8177-c391bdedd4d5.png)
@@ -25,8 +38,8 @@ Above we can see screens connected in one image. On the image are points describ
 2) Here we have menu with LEDs effects. User chose invalid option. Error occurred.
 3) User chose option 1, then 2, then 3. Data from sensors was measured and printed. After it user chose option 4 (Time&Date).
 4) User chose option 0 (Set time). Time has been configured correctly. 
-5) Here user chose option 5 and configured alarm.
-6) Alarm occurred. User chose option 6.
+5) Here user chose option 5 (Set alarm) and configured alarm.
+6) Alarm occurred. User chose option 6 (Help).
 7) Help information printed.
 8) User clicked button and get data log.
 
