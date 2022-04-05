@@ -17,7 +17,7 @@ User can:
 
 
 ### Vizualization
-![1](https://user-images.githubusercontent.com/62250785/161801873-02cf0ff3-2c78-4b3a-bff4-05211d870e45.png)
+![Bez tytułu](https://user-images.githubusercontent.com/62250785/161802924-2340fdc6-1187-48b7-a9cb-d302d06d8161.png)
 
 
 
