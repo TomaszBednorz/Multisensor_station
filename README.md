@@ -1,56 +1,27 @@
-# Multisensor_station - in progress
+# Multisensor_station
 
 ## 1. Description
-Small home project of weather station. User can read data from sensors by serial port. All drivers are written from scratch (without CMSIS and FreeRTOS).
+Small home project of the multisensor station. Communication between the user and interface is by serial port. All drivers are written from scratch (without CMSIS and FreeRTOS).
 
 ## 2. Information about project
 ### Functionalities
-- User can check the following informations from sensors
-  - temperature [°C]
-  - humidity [%]
-  - pressure [hPa]
-  - height above sea level [m]
-  - height above ground in current location [m]
-  - lighting [%]
-  - acceleration [m/s^2]
-  - rotation speed [°/s]
-  - date and time
-- User can set the information nedded to some calculations
-  - height in user location [m] - by serial port
-  - pressure in user location [hPa] - by serial port
-  - threshold lighting [%] - by potentiometer 
+User can:
+ - set the LEDs lighting sequence on board,
+ - read data from sensors like: pressure [hPa], temperature [*C], lighting [%],
+ - read/set time and date,
+ - set alarms,
+ - use the potentiometer to change threshold to light up the LED
+ - click the button to get log with dat
+
+### Project structure
+
 ### Vizualization
-- LCD display (switching data by 4x4 tact switch)
-<TO DO: photography with 4x4 tact switch description>
-- Serial port (by sending appropriate commands described below - 115200 boudrate)
-  - help : shows all options
-  - t : shows the temperature [°C]
-  - hu : shows the humidity [%]
-  - p : shows the pressure [hPa]
-  - p_xxxx.xx : saves actual pressure in user location (in hPa) <TO DO: link to website>
-  - he_asl : shows height above sea level [m]
-  - he_ag : shows height above ground in current location [m]
-  - he_xxx.xx : saves actual height in user location (in m) <TO DO: link to website>
-  - l : shows the lighting [%]
-  - a : shows the acceleration [m/s^2]
-  - g : shows the rotation speed [°/s]
-  - t : shows the time [date and time]
-  - all : shows all data from sensors
-  - i : shows information about actual threshold to turn on diode (in %) and actual pressure at sea level
-  - s : saves the log to the EEPROM memory
-  - e : reads the log from the EEPROM memory
-  - cont1_en : enables continuous mode 1 Hz - shows measurements every 1 second by serial port
-  - cont4_en : enables continuous mode 4 Hz - shows measurements every 250 miliseconds by serial port
-  - cont10_en : enables continuous mode 10 Hz - shows measurements every 100 miliseconds by serial port
-  - cont_dis : disables continuous mode
-- Servo shows actual temperature
-- The LED turns on when lighting is below set threshold
   
 ## 3. Bill of materials
 - STM32F429ZI Nucleo board
 - LPS25H - pressure & temperature sensor
 - Photoresistor
-- Resistor
+- Resistors
 - Potentiometer
 - LED diode
 - Tact switch
@@ -84,12 +55,7 @@ Small home project of weather station. User can read data from sensors by serial
 - [x] Pressure/temperature sensor LPS25HB 
 ### API
 - [x] Handling the received data
-- [ ] LEDs effects
-- [ ] Temperature / Pressure
-- [ ] RTC (data, time, alarm)
-- [ ] Button intterrupt
-### Others
-- [ ] Electrical schematics
-- [ ] Project description & visualization on GitHub
-## 6. Electrical diagram
-<TO DO>
+- [x] LEDs effects
+- [x] Temperature / Pressure
+- [x] RTC (data, time, alarm)
+- [x] Button intterrupt
