@@ -7,7 +7,7 @@ Small home project of the multisensor station. Communication between the user an
 ## 2. Information about project
 ### Functionalities
 User can:
- - set the on board LEDs lighting sequence,
+ - set the LEDs lighting sequence,
  - read data from sensors like: pressure [hPa], temperature [*C], lighting [%],
  - read/set time and date,
  - set alarms,
