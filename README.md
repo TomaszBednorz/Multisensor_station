@@ -12,7 +12,7 @@ User can:
  - read/set time and date,
  - set alarms,
  - use the potentiometer to change threshold to light up the LED
- - click the button to get log with dat
+ - click the button to get log with data
 
 ### Project structure
 Some of catalogs are described below
