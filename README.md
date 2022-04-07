@@ -33,7 +33,7 @@ Multisensor_station/
 ### Vizualization
 ![Bez tytułu](https://user-images.githubusercontent.com/62250785/161803830-d4a58c7e-f882-44aa-8177-c391bdedd4d5.png)
 
-Above we can see screens connected in one image. On the image are points described below.
+Above we can see screens connected in one picture. On the picture are points described below.
 1) Main menu panel. User can choose one of seven options from 0 to 6. User chose option 0 (LED effect).
 2) Here we have menu with LEDs effects. User chose invalid option. Error occurred.
 3) User chose option 1, then 2, then 3. Data from sensors was measured and printed. After it user chose option 4 (Time&Date).
